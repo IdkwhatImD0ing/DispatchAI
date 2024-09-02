@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+//* define type data
+enum callType {
+    Fire
+    Medical
+    Flood
+    Robbery
+    Critical
+}
+
+enum severityType {
+    Low
+    Medium
+    High
+    Critical
+}
+enum statusType {
+    Active
+    Resolved
+}
+
+//* define tables
+model User {
+  id          String   @id @default(cuid()) // primary key
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  clerkUserId String?  @unique // enforce uniqueness
+  userModel   String?
+  userPrompt  String?
+}
+
+model Call {
+    id         String   @id @default(cuid()) // primary key
+    type       callType
+    createdAt  DateTime @default(now())
+    endedAt    DateTime?
+    duration   Int?
+    severity   severityType
+    status     statusType
+}
+
